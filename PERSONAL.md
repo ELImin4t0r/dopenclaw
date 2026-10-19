@@ -11,16 +11,16 @@ updates keep merging cleanly.
 
 ## What's different from upstream
 
-| Feature | Where |
-| --- | --- |
-| Name "dopenclaw" on iPhone, Watch, Mac and in chat | `apps/ios/project.yml`, `apps/ios/Sources/Info.plist`, `apps/macos/Sources/OpenClaw/Resources/Info.plist`, config `identity.name` |
-| Local-only config (Ollama model, no channels, no update check, exclusive plugin allowlist) | `config/personal/openclaw.json` |
-| Calendar "starting soon" alerts, reminders, 08:00 briefing, `reminder_add` / `todo_add` tools | `extensions/daily-briefing/` |
-| KURT reservation alerts + automatic check-in when the phone arrives at the library | `extensions/kuleuven-library/` |
-| AWS sign-up + free-credit activities | `skills/aws-free-credits/SKILL.md` |
-| Clipping: find highlights, cut vertical clips, approve, post to Shorts/TikTok/Reels | `extensions/clipper/` |
-| "Features" dropdown in the chat top bar (iPhone + Mac) | `apps/shared/OpenClawKit/Sources/OpenClawChatUI/PersonalFeatureMenu.swift` |
-| iPhone: local notification schedule + library geofences | `apps/ios/Sources/Personal/PersonalAssistantSync.swift` |
+| Feature                                                                                       | Where                                                                                                                             |
+| --------------------------------------------------------------------------------------------- | --------------------------------------------------------------------------------------------------------------------------------- |
+| Name "dopenclaw" on iPhone, Watch, Mac and in chat                                            | `apps/ios/project.yml`, `apps/ios/Sources/Info.plist`, `apps/macos/Sources/OpenClaw/Resources/Info.plist`, config `identity.name` |
+| Local-only config (Ollama model, no channels, no update check, exclusive plugin allowlist)    | `config/personal/openclaw.json`                                                                                                   |
+| Calendar "starting soon" alerts, reminders, 08:00 briefing, `reminder_add` / `todo_add` tools | `extensions/daily-briefing/`                                                                                                      |
+| KURT reservation alerts + automatic check-in when the phone arrives at the library            | `extensions/kuleuven-library/`                                                                                                    |
+| AWS sign-up + free-credit activities                                                          | `skills/aws-free-credits/SKILL.md`                                                                                                |
+| Clipping: find highlights, cut vertical clips, approve, post to Shorts/TikTok/Reels           | `extensions/clipper/`                                                                                                             |
+| "Features" dropdown in the chat top bar (iPhone + Mac)                                        | `apps/shared/OpenClawKit/Sources/OpenClawChatUI/PersonalFeatureMenu.swift`                                                        |
+| iPhone: local notification schedule + library geofences                                       | `apps/ios/Sources/Personal/PersonalAssistantSync.swift`                                                                           |
 
 ## Where my data lives
 
@@ -44,13 +44,19 @@ updates keep merging cleanly.
 ### Laptop
 
 ```bash
-brew install node pnpm ollama tailscale xcodegen
+brew install node pnpm ollama xcodegen
 ./scripts/personal-setup.sh        # config + markdown files + model + deps
 dopenclaw gateway                  # keep this running
 ```
 
 Tailscale lets the phone reach the laptop away from home. The traffic is
 end-to-end encrypted between my own devices.
+
+Use the Tailscale **app** on the Mac (tailscale.com/download) and on the
+iPhone, signed in to the same account. Don't also run the Homebrew
+`tailscale` service: two copies on one Mac show up as two devices and conflict.
+Start `dopenclaw gateway` after Tailscale is connected, or it only listens on
+the Mac itself.
 
 ### iPhone (no App Store)
 
@@ -77,7 +83,7 @@ while connected.
 2. Add the libraries I use to `personal/places.md`.
 3. **Still to do:** reading reservations and checking in aren't wired to the
    real site yet. KURT has no public API docs. Say "record KURT", click
-   through *My reservations* and a check-in, close the window, then finish the
+   through _My reservations_ and a check-in, close the window, then finish the
    two functions in `extensions/kuleuven-library/src/kurt-site.ts` using
    `~/.openclaw/kuleuven-library/kurt-capture.md`.
 
@@ -104,14 +110,14 @@ note, or it's skipped.
 2. Create the free developer apps and put their keys in
    `~/.openclaw/openclaw.json` under `plugins.entries.clipper.config`:
    - Twitch: dev.twitch.tv › Console › Register app → `clientId`, `clientSecret`.
-   - YouTube: Google Cloud console › enable *YouTube Data API v3* › OAuth
+   - YouTube: Google Cloud console › enable _YouTube Data API v3_ › OAuth
      client (Desktop) → `clientId`, `clientSecret`. Keep `redirectUri`
      `http://localhost:8765/callback`.
-   - TikTok: developers.tiktok.com › app with *Login Kit* + *Content Posting
-     API* (Direct Post) → `clientKey`, `clientSecret`, and the https
+   - TikTok: developers.tiktok.com › app with _Login Kit_ + _Content Posting
+     API_ (Direct Post) → `clientKey`, `clientSecret`, and the https
      `redirectUri` you registered.
-   - Instagram: developers.facebook.com › app with *Instagram* + *Facebook
-     Login for Business* → `appId`, `appSecret`, `redirectUri`.
+   - Instagram: developers.facebook.com › app with _Instagram_ + _Facebook
+     Login for Business_ → `appId`, `appSecret`, `redirectUri`.
 3. Restart dopenclaw, then in chat: "connect my youtube account" (and tiktok,
    instagram). Open the link, approve, and paste back the URL you land on.
 4. Optional captions: `brew install whisper-cpp`, download a model (e.g.

@@ -26,7 +26,7 @@ are the only way to chat with it.
 On the Mac:
 
 ```bash
-brew install node pnpm ollama tailscale xcodegen
+brew install node pnpm ollama xcodegen
 ./scripts/personal-setup.sh      # config, markdown files, AI model, video tools, dependencies
 dopenclaw gateway                # start dopenclaw; keep it running
 dopenclaw qr                     # pair the iPhone app

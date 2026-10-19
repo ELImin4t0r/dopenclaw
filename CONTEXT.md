@@ -93,11 +93,14 @@ How the pieces talk:
   PR for this branch: it isn't meant to go upstream.
 - **The setup config lacked `gateway.mode`**, so the gateway refused to start.
   `config/personal/openclaw.json` now sets `"mode": "local"`.
+- **Two Tailscales on the Mac.** The Tailscale app was already installed, and
+  starting the Homebrew `tailscale` service added a second device. Use only
+  the app; the Homebrew service is stopped.
 
 ## Status right now
 
 **Installed and working:** node 26, pnpm, the project dependencies, Ollama
-with `qwen3:14b`, ffmpeg, yt-dlp, Tailscale CLI, xcodegen, the GitHub CLI
+with `qwen3:14b`, ffmpeg, yt-dlp, the Tailscale app (connected, iPhone too), xcodegen, the GitHub CLI
 (`gh`, not logged in yet: run `gh auth login`), the config, my markdown files,
 and the `dopenclaw` command. The plugin tests pass (21 tests), `dopenclaw
 gateway` starts with all three plugins loaded, and `dopenclaw doctor` reports
@@ -120,8 +123,9 @@ only warnings.
 2. **Start it:** `dopenclaw gateway` (keep it running).
 3. **Doctor follow-ups:** `dopenclaw doctor --fix` applies two small config
    defaults; the `aws` CLI (`brew install awscli`) makes the AWS skill usable.
-4. **Tailscale:** `sudo brew services start tailscale`, then `tailscale up` and
-   log in. Install Tailscale on the iPhone too.
+4. ~~Tailscale~~ done: the Tailscale app on the Mac and the iPhone, same
+   account. The gateway answers on the Mac's Tailscale address
+   (100.117.160.65:18789).
 5. **iPhone app:**
    1. Install Xcode on the Mac.
    2. Copy `apps/ios/LocalSigning.xcconfig.example` to `LocalSigning.xcconfig`

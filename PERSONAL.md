@@ -5,7 +5,7 @@ iPhone and Mac apps are the only way to chat with it. No WhatsApp, Discord,
 Telegram or other channels; no cloud model; no cloud storage. Everything it
 knows lives in markdown under `~/.openclaw/workspace/`.
 
-Under the hood it's still OpenClaw: the terminal command is `openclaw` and the
+Type `dopenclaw` in the terminal (`dopenclaw gateway`, `dopenclaw qr`, `dopenclaw doctor`). Under the hood it is still OpenClaw: the
 data folder is `~/.openclaw`. Only the visible name changed, so upstream
 updates keep merging cleanly.
 
@@ -44,7 +44,7 @@ updates keep merging cleanly.
 ```bash
 brew install node pnpm ollama tailscale xcodegen
 ./scripts/personal-setup.sh        # config + markdown files + model + deps
-pnpm openclaw gateway              # keep this running
+dopenclaw gateway                  # keep this running
 ```
 
 Tailscale lets the phone reach the laptop away from home. The traffic is
@@ -56,7 +56,7 @@ end-to-end encrypted between my own devices.
    set my own bundle ID and Apple team.
 2. `pnpm ios:open`, select my iPhone, Run.
    With a free Apple ID the app must be re-run from Xcode every 7 days.
-3. In the app: pair with `pnpm openclaw qr`. Set location to **Always** and
+3. In the app: pair with `dopenclaw qr`. Set location to **Always** and
    allow notifications. Keep Background App Refresh on.
 
 No push relay is configured, so the laptop never sends anything through Apple's

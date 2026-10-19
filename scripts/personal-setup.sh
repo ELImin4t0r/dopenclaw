@@ -43,8 +43,10 @@ Format: \`- YYYY-MM-DD HH:MM | Title | optional body\`"
 seed "$PERSONAL/aws-credits.md" "# AWS credits progress"
 
 pgrep -x ollama >/dev/null || brew services start ollama
+# The service needs a few seconds before it accepts requests.
+for _ in $(seq 30); do ollama list >/dev/null 2>&1 && break; sleep 1; done
 ollama pull "$MODEL"
 (cd "$REPO" && pnpm install)
 echo
-echo "Done. Start dopenclaw with: (cd $REPO && pnpm openclaw gateway)"
-echo "Then pair the iPhone with: pnpm openclaw qr"
+echo "Done. Start dopenclaw with: dopenclaw gateway"
+echo "Then pair the iPhone with: dopenclaw qr"

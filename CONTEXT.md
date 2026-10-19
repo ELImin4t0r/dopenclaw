@@ -99,7 +99,11 @@ GB), ffmpeg, yt-dlp and the project dependencies (`pnpm install`).
 - Google Chrome. The download failed twice; retry with
   `brew install --cask google-chrome`.
 - **Xcode.** Install it on the **Mac** from the Mac App Store (it doesn't exist
-  for iPhone).
+  for iPhone). **Blocked:** this Mac (M3 MacBook Air) runs macOS 15.6.1, and
+  current Xcode needs macOS 26.6+. Older Xcode won't do, because the code needs
+  Swift 6.3. Fix: update to macOS Tahoe 26 (System Settings → General →
+  Software Update), then install Xcode.
+- **iPhone requirement:** the app needs iOS 26.2 or later on the phone.
 
 ## To do next
 

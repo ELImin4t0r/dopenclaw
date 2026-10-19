@@ -27,7 +27,7 @@ Features I asked for:
 
 ## Where things are
 
-- **Code:** `~/SHRLM/dopenclaw/` (moved out of the rlm_self_harness repo on purpose),
+- **Code:** `~/dopenclaw/` (next to `~/SHRLM`, deliberately outside the rlm_self_harness repo),
   branch `personal`. My fork is `github.com/ELImin4t0r/openclaw` (based on
   upstream commit `59c74d5`). The work is committed locally and **not pushed**.
 - **Data:** `~/.openclaw/`
@@ -82,7 +82,7 @@ How the pieces talk:
 - **My first `git clone` was still running** when Claude started working in the
   same folder. The clone failed ("early EOF", slow connection), git deleted the
   folder, and the first version of the work was lost. Claude rebuilt
-  everything as `~/SHRLM/dopenclaw/` and now commits after each step. **Don't clone
+  everything as `~/dopenclaw/` and now commits after each step. **Don't clone
   into that folder again.**
 - **The internet connection drops big downloads.** Chrome failed twice and the
   model download is slow.

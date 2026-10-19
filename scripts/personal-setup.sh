@@ -41,6 +41,18 @@ seed "$PERSONAL/alerts/manual.md" "# Reminders
 
 Format: \`- YYYY-MM-DD HH:MM | Title | optional body\`"
 seed "$PERSONAL/aws-credits.md" "# AWS credits progress"
+mkdir -p "$PERSONAL/clips/videos"
+seed "$PERSONAL/clips/streamers.md" "# Streamers to clip
+
+Only add creators you're allowed to clip (a clipping program, or their OK).
+Lines without a permission are ignored.
+Format: \`- Name | twitch:login | permission: how you're allowed\`
+Other sources: \`youtube:https://www.youtube.com/@channel/videos\`, \`kick:channel\`
+"
+
+for bin in ffmpeg yt-dlp; do
+  command -v "$bin" >/dev/null || brew install "$bin"
+done
 
 pgrep -x ollama >/dev/null || brew services start ollama
 # The service needs a few seconds before it accepts requests.

@@ -86,6 +86,12 @@ struct ChatProTab: View {
                         self.headerAgentIdentity
                     }
                     .sharedBackgroundVisibility(.hidden)
+                    if let viewModel {
+                        ToolbarItem(placement: .topBarTrailing) {
+                            PersonalFeatureMenu(viewModel: viewModel)
+                                .labelStyle(.iconOnly)
+                        }
+                    }
                     ToolbarItem(placement: .topBarTrailing) {
                         self.chatActionsMenu
                     }

@@ -287,6 +287,9 @@ public struct OpenClawChatWindowShell: View {
                 }
             }
             ToolbarItem(placement: .primaryAction) {
+                PersonalFeatureMenu(viewModel: self.viewModel)
+            }
+            ToolbarItem(placement: .primaryAction) {
                 self.sessionActionsMenu
             }
         }

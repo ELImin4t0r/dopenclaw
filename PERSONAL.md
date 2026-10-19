@@ -18,6 +18,8 @@ updates keep merging cleanly.
 | Calendar "starting soon" alerts, reminders, 08:00 briefing, `reminder_add` / `todo_add` tools | `extensions/daily-briefing/` |
 | KURT reservation alerts + automatic check-in when the phone arrives at the library | `extensions/kuleuven-library/` |
 | AWS sign-up + free-credit activities | `skills/aws-free-credits/SKILL.md` |
+| Clipping: find highlights, cut vertical clips, approve, post to Shorts/TikTok/Reels | `extensions/clipper/` |
+| "Features" dropdown in the chat top bar (iPhone + Mac) | `apps/shared/OpenClawKit/Sources/OpenClawChatUI/PersonalFeatureMenu.swift` |
 | iPhone: local notification schedule + library geofences | `apps/ios/Sources/Personal/PersonalAssistantSync.swift` |
 
 ## Where my data lives
@@ -81,6 +83,46 @@ while connected.
 
 Check-in only ever happens with a fresh phone location inside the library.
 
+## Clipping (YouTube Shorts, TikTok, Instagram Reels)
+
+How it runs: every 6 hours dopenclaw finds highlights for the streamers in
+`personal/clips/streamers.md` (most-viewed Twitch clips, or the loudest moments
+of the latest YouTube/Kick VOD). It cuts them into 1080×1920 clips, with
+captions if a whisper model is set, and notifies the phone. You approve them
+in chat (**Features › Review clips**), and approved clips post at 12:00, 17:00
+and 21:00 to every connected account.
+
+**Making money:** reposting without permission gets copyright strikes and no
+payouts. Clip creators who run clipping programs (e.g. on Whop, paid per
+view) or who said yes. Every line in `streamers.md` needs a `permission:`
+note, or it's skipped.
+
+**One-time setup (all by you, because platforms ban bot-made accounts):**
+
+1. Create the accounts yourself: a YouTube channel, a TikTok account, and an
+   Instagram account switched to Creator/Business and linked to a Facebook Page.
+2. Create the free developer apps and put their keys in
+   `~/.openclaw/openclaw.json` under `plugins.entries.clipper.config`:
+   - Twitch: dev.twitch.tv › Console › Register app → `clientId`, `clientSecret`.
+   - YouTube: Google Cloud console › enable *YouTube Data API v3* › OAuth
+     client (Desktop) → `clientId`, `clientSecret`. Keep `redirectUri`
+     `http://localhost:8765/callback`.
+   - TikTok: developers.tiktok.com › app with *Login Kit* + *Content Posting
+     API* (Direct Post) → `clientKey`, `clientSecret`, and the https
+     `redirectUri` you registered.
+   - Instagram: developers.facebook.com › app with *Instagram* + *Facebook
+     Login for Business* → `appId`, `appSecret`, `redirectUri`.
+3. Restart dopenclaw, then in chat: "connect my youtube account" (and tiktok,
+   instagram). Open the link, approve, and paste back the URL you land on.
+4. Optional captions: `brew install whisper-cpp`, download a model (e.g.
+   `ggml-base.en.bin`) and set `whisperModel` to its path.
+
+**Before posts can be public:** YouTube and TikTok keep API uploads
+**private** until they review your developer app. TikTok also requires the
+account to be private until then. Apply for the YouTube API audit and the
+TikTok Content Posting audit once everything works privately. Instagram
+publishes normally once connected.
+
 ## Adding features later
 
 **Quickest: a skill.** No code, no rebuild. A skill is a markdown file that
@@ -100,6 +142,10 @@ Copy `skills/aws-free-credits/SKILL.md` as a template. The frontmatter
 2. Add `<id>` to `plugins.allow` in `~/.openclaw/openclaw.json`. Without that
    the allowlist blocks it.
 3. Restart the gateway.
+4. To show it in the **Features** dropdown, add an entry to
+   `PersonalFeatures.groups` in
+   `apps/shared/OpenClawKit/Sources/OpenClawChatUI/PersonalFeatureMenu.swift`
+   and reinstall the app.
 
 Useful building blocks, all used by the two plugins:
 

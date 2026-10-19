@@ -1,0 +1,56 @@
+{
+  "id": "clipper",
+  "categories": ["productivity"],
+  "name": "Clipper",
+  "description": "Find highlights from streamers you have permission to clip, cut vertical captioned clips on this laptop, and post the ones you approve to YouTube Shorts, TikTok and Instagram Reels on a schedule.",
+  "version": "2026.10.5",
+  "activation": {
+    "onStartup": true
+  },
+  "configSchema": {
+    "type": "object",
+    "additionalProperties": false,
+    "properties": {
+      "postingTimes": { "type": "array", "items": { "type": "string", "pattern": "^\\d{2}:\\d{2}$" } },
+      "findEveryHours": { "type": "integer", "minimum": 1 },
+      "clipsPerStreamer": { "type": "integer", "minimum": 1, "maximum": 10 },
+      "clipSeconds": { "type": "integer", "minimum": 5, "maximum": 180 },
+      "whisperModel": { "type": "string" },
+      "twitch": {
+        "type": "object",
+        "additionalProperties": false,
+        "properties": { "clientId": { "type": "string" }, "clientSecret": { "type": "string" } }
+      },
+      "youtube": {
+        "type": "object",
+        "additionalProperties": false,
+        "properties": {
+          "clientId": { "type": "string" },
+          "clientSecret": { "type": "string" },
+          "redirectUri": { "type": "string" }
+        }
+      },
+      "tiktok": {
+        "type": "object",
+        "additionalProperties": false,
+        "properties": {
+          "clientKey": { "type": "string" },
+          "clientSecret": { "type": "string" },
+          "redirectUri": { "type": "string" }
+        }
+      },
+      "instagram": {
+        "type": "object",
+        "additionalProperties": false,
+        "properties": {
+          "appId": { "type": "string" },
+          "appSecret": { "type": "string" },
+          "redirectUri": { "type": "string" }
+        }
+      }
+    }
+  },
+  "contracts": {
+    "tools": ["clips_find", "clips_review", "clips_approve", "clips_reject", "clips_status", "clips_connect"]
+  }
+}

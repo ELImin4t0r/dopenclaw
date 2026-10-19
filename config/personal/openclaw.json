@@ -47,7 +47,8 @@
       "device-pair",
       "bonjour",
       "daily-briefing",
-      "kuleuven-library"
+      "kuleuven-library",
+      "clipper"
     ],
     "entries": {
       "daily-briefing": {
@@ -62,6 +63,37 @@
         "config": {
           "reminderLeadMinutes": 30,
           "autoCheckin": true
+        }
+      },
+      "clipper": {
+        "enabled": true,
+        "config": {
+          "postingTimes": [
+            "12:00",
+            "17:00",
+            "21:00"
+          ],
+          "clipsPerStreamer": 3,
+          "clipSeconds": 45,
+          "twitch": {
+            "clientId": "",
+            "clientSecret": ""
+          },
+          "youtube": {
+            "clientId": "",
+            "clientSecret": "",
+            "redirectUri": "http://localhost:8765/callback"
+          },
+          "tiktok": {
+            "clientKey": "",
+            "clientSecret": "",
+            "redirectUri": ""
+          },
+          "instagram": {
+            "appId": "",
+            "appSecret": "",
+            "redirectUri": ""
+          }
         }
       }
     }

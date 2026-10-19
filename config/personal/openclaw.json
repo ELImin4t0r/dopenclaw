@@ -25,6 +25,7 @@
     }
   },
   "gateway": {
+    "mode": "local",
     "bind": "tailnet",
     "auth": {
       "mode": "token",

@@ -20,7 +20,8 @@
   "models": {
     "providers": {
       "ollama": {
-        "baseUrl": "http://127.0.0.1:11434"
+        "baseUrl": "http://127.0.0.1:11434",
+        "apiKey": "ollama-local"
       }
     }
   },

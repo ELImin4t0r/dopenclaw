@@ -1,0 +1,69 @@
+{
+  "agents": {
+    "defaults": {
+      "model": {
+        "primary": "ollama/qwen3:14b"
+      },
+      "heartbeat": {
+        "every": "0m"
+      }
+    },
+    "entries": {
+      "main": {
+        "identity": {
+          "name": "dopenclaw",
+          "theme": "private personal assistant"
+        }
+      }
+    }
+  },
+  "models": {
+    "providers": {
+      "ollama": {
+        "baseUrl": "http://127.0.0.1:11434"
+      }
+    }
+  },
+  "gateway": {
+    "bind": "tailnet",
+    "auth": {
+      "mode": "token",
+      "token": "__GATEWAY_TOKEN__"
+    }
+  },
+  "update": {
+    "checkOnStart": false
+  },
+  "memory": {
+    "search": {
+      "provider": "none"
+    }
+  },
+  "plugins": {
+    "allow": [
+      "ollama",
+      "memory-core",
+      "browser",
+      "device-pair",
+      "bonjour",
+      "daily-briefing",
+      "kuleuven-library"
+    ],
+    "entries": {
+      "daily-briefing": {
+        "enabled": true,
+        "config": {
+          "eventLeadMinutes": 15,
+          "briefingTime": "08:00"
+        }
+      },
+      "kuleuven-library": {
+        "enabled": true,
+        "config": {
+          "reminderLeadMinutes": 30,
+          "autoCheckin": true
+        }
+      }
+    }
+  }
+}

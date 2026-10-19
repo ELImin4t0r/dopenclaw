@@ -1,0 +1,25 @@
+{
+  "id": "kuleuven-library",
+  "categories": ["productivity"],
+  "name": "KU Leuven Library",
+  "description": "KURT reservation alerts, and automatic check-in when your phone shows you've arrived at the library.",
+  "version": "2026.10.5",
+  "activation": {
+    "onStartup": true
+  },
+  "configSchema": {
+    "type": "object",
+    "additionalProperties": false,
+    "properties": {
+      "baseUrl": { "type": "string" },
+      "reminderLeadMinutes": { "type": "integer", "minimum": 0 },
+      "checkinBeforeMinutes": { "type": "integer", "minimum": 0 },
+      "checkinAfterMinutes": { "type": "integer", "minimum": 0 },
+      "autoCheckin": { "type": "boolean" },
+      "browserChannel": { "type": "string" }
+    }
+  },
+  "contracts": {
+    "tools": ["kurt_login", "kurt_record", "kurt_reservations", "kurt_checkin"]
+  }
+}

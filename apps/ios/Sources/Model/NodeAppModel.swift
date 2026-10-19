@@ -538,6 +538,7 @@ final class NodeAppModel {
     }
 
     private var lastSignificantLocationWakeAt: Date?
+    private let personalSync = PersonalAssistantSync()
     private var watchChatStorageWarning: String?
     private var watchChatAdmissionWarning: String?
     var watchChatDeliveryWarning: String? {
@@ -1116,6 +1117,48 @@ final class NodeAppModel {
             self.reconcileSignificantLocationMonitoring(
                 mode: self.locationMode(),
                 authorizationStatus: snapshot.authorizationStatus)
+        }
+        self.personalSync.onArrive = { [weak self] location in
+            await self?.handlePersonalPlaceArrival(location)
+        }
+    }
+
+    /// Library geofence entry: reconnect if needed, then let the Gateway decide
+    /// whether a reservation is open and check in (kuleuven-library plugin).
+    private func handlePersonalPlaceArrival(_ location: CLLocation) async {
+        await self.handleSignificantLocationWakeIfNeeded()
+        struct Arrival: Encodable {
+            let lat: Double
+            let lon: Double
+            let accuracyMeters: Double
+            let timestampMs: Double
+        }
+        struct ArrivalResult: Decodable {
+            let checkedIn: Bool
+            let notify: Bool
+            let message: String
+        }
+        let arrival = Arrival(
+            lat: location.coordinate.latitude,
+            lon: location.coordinate.longitude,
+            accuracyMeters: location.horizontalAccuracy,
+            timestampMs: location.timestamp.timeIntervalSince1970 * 1000)
+        do {
+            let paramsJSON = try String(decoding: JSONEncoder().encode(arrival), as: UTF8.self)
+            let data = try await self.operatorGateway.request(
+                method: "library.arrived",
+                paramsJSON: paramsJSON,
+                timeoutSeconds: 90)
+            let result = try JSONDecoder().decode(ArrivalResult.self, from: data)
+            if result.notify {
+                await PersonalAssistantSync.notifyNow(
+                    title: result.checkedIn ? "Checked in ✅" : "Library check-in",
+                    body: result.message)
+            }
+        } catch {
+            await PersonalAssistantSync.notifyNow(
+                title: "Library check-in",
+                body: "Couldn't reach your laptop to check in. Open dopenclaw and ask it to check you in.")
         }
     }
 
@@ -4096,6 +4139,8 @@ extension NodeAppModel {
         await self.refreshBrandingFromGateway(shouldApply: shouldContinue)
         guard shouldContinue() else { return }
         await self.refreshAgentsFromGateway(shouldApply: shouldContinue)
+        guard shouldContinue() else { return }
+        await self.personalSync.sync(using: self.operatorGateway)
         guard shouldContinue() else { return }
         await self.talkMode.reloadConfig(shouldApply: shouldContinue)
         guard shouldContinue() else { return }
@@ -7187,6 +7232,8 @@ extension NodeAppModel {
         let result = await performBackgroundAliveBeaconIfNeeded(
             wakeId: wakeId,
             trigger: normalizedTrigger)
+        // Refresh the locally scheduled alerts while the app is briefly awake.
+        await self.personalSync.sync(using: self.operatorGateway)
         let outcomeMessage =
             "Background refresh wake outcome wakeId=\(wakeId) "
                 + "applied=\(result.applied) "

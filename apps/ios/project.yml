@@ -151,7 +151,7 @@ targets:
     info:
       path: Sources/Info.plist
       properties:
-        CFBundleDisplayName: OpenClaw
+        CFBundleDisplayName: dopenclaw
         CFBundleIconName: "$(ASSETCATALOG_COMPILER_APPICON_NAME)"
         CFBundleURLTypes:
           - CFBundleURLName: ai.openclawfoundation.app
@@ -398,7 +398,7 @@ targets:
     info:
       path: WatchApp/Info.plist
       properties:
-        CFBundleDisplayName: OpenClaw
+        CFBundleDisplayName: dopenclaw
         CFBundleShortVersionString: "$(OPENCLAW_MARKETING_VERSION)"
         CFBundleVersion: "$(OPENCLAW_BUILD_VERSION)"
         WKCompanionAppBundleIdentifier: "$(OPENCLAW_COMPANION_APP_BUNDLE_ID)"

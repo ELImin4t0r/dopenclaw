@@ -1,0 +1,22 @@
+{
+  "id": "daily-briefing",
+  "categories": ["productivity"],
+  "name": "Daily Briefing",
+  "description": "Calendar 'starting soon' alerts, reminders and a morning briefing, delivered as local notifications on your paired iPhone and Mac.",
+  "version": "2026.10.5",
+  "activation": {
+    "onStartup": true
+  },
+  "configSchema": {
+    "type": "object",
+    "additionalProperties": false,
+    "properties": {
+      "eventLeadMinutes": { "type": "integer", "minimum": 0 },
+      "briefingTime": { "type": "string", "pattern": "^\\d{2}:\\d{2}$" },
+      "horizonHours": { "type": "integer", "minimum": 1, "maximum": 168 }
+    }
+  },
+  "contracts": {
+    "tools": ["reminder_add", "todo_add"]
+  }
+}

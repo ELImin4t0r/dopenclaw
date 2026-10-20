@@ -7,7 +7,8 @@ set -euo pipefail
 REPO="$(cd "$(dirname "$0")/.." && pwd)"
 STATE="${OPENCLAW_STATE_DIR:-$HOME/.openclaw}"
 PERSONAL="$STATE/workspace/personal"
-MODEL="${OPENCLAW_PERSONAL_MODEL:-qwen3:14b}"
+# 8b fits a 16 GB Mac; 14b spills onto the CPU and takes minutes per reply.
+MODEL="${OPENCLAW_PERSONAL_MODEL:-qwen3:8b}"
 
 for bin in node pnpm ollama; do
   command -v "$bin" >/dev/null || { echo "Missing '$bin'. Install it first (brew install node pnpm ollama)." >&2; exit 1; }
@@ -19,7 +20,7 @@ if [[ -e "$STATE/openclaw.json" ]]; then
   echo "Keeping existing $STATE/openclaw.json (compare with config/personal/openclaw.json)."
 else
   TOKEN="$(openssl rand -hex 24)"
-  sed -e "s/__GATEWAY_TOKEN__/$TOKEN/" -e "s#ollama/qwen3:14b#ollama/$MODEL#" \
+  sed -e "s/__GATEWAY_TOKEN__/$TOKEN/" -e "s#ollama/qwen3:8b#ollama/$MODEL#" \
     "$REPO/config/personal/openclaw.json" > "$STATE/openclaw.json"
   chmod 600 "$STATE/openclaw.json"
   echo "Wrote $STATE/openclaw.json"
@@ -59,6 +60,8 @@ pgrep -x ollama >/dev/null || brew services start ollama
 for _ in $(seq 30); do ollama list >/dev/null 2>&1 && break; sleep 1; done
 ollama pull "$MODEL"
 (cd "$REPO" && pnpm install)
+# Local Ollama needs no key, but the gateway wants an auth profile; any value works.
+(cd "$REPO" && printf 'ollama-local\n' | pnpm --silent openclaw models auth paste-api-key --provider ollama)
 echo
 echo "Done. Start dopenclaw with: dopenclaw gateway"
 echo "Then pair the iPhone with: dopenclaw qr"

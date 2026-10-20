@@ -2,7 +2,7 @@
   "agents": {
     "defaults": {
       "model": {
-        "primary": "ollama/qwen3:14b"
+        "primary": "ollama/qwen3:8b"
       },
       "heartbeat": {
         "every": "0m"
@@ -20,8 +20,7 @@
   "models": {
     "providers": {
       "ollama": {
-        "baseUrl": "http://127.0.0.1:11434",
-        "apiKey": "ollama-local"
+        "baseUrl": "http://127.0.0.1:11434"
       }
     }
   },
